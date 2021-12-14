@@ -2,7 +2,7 @@ package hello.login.web.login;
 
 import hello.login.domain.member.Member;
 import hello.login.login.LoginService;
-import hello.login.web.SessioinConst;
+import hello.login.web.SessionConst;
 import hello.login.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,7 +97,7 @@ public class LoginController {
         //세션이 있으면 있는 세션, 없으면 신규 세션 생성
         HttpSession session = request.getSession();
         //세션에 로그인 회원 정보 보관
-        session.setAttribute(SessioinConst.LOGIN_MEMBER, loginMember);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
         return "redirect:/";
     }

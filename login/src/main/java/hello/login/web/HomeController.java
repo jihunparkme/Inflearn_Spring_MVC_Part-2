@@ -66,7 +66,7 @@ public class HomeController {
             return "home";
         }
 
-        Member loginMember = (Member) session.getAttribute(SessioinConst.LOGIN_MEMBER);
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
         //세션에 회원 데이터가 없으면 home
         if (loginMember == null) {
@@ -80,7 +80,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String homeLoginV3Spring(
-            @SessionAttribute(name = SessioinConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
 
         //세션에 회원 데이터가 없으면 home
         if (loginMember == null) {
