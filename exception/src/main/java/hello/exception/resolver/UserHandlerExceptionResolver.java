@@ -24,6 +24,7 @@ public class UserHandlerExceptionResolver implements HandlerExceptionResolver {
             if (ex instanceof UserException) {
                 log.info("UserException resolver to 400");
                 String acceptHeader = request.getHeader("accept");
+                //예외를 HTTP 상태 코드 400으로 전달
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
                 if ("application/json".equals(acceptHeader)) {
@@ -35,8 +36,10 @@ public class UserHandlerExceptionResolver implements HandlerExceptionResolver {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(result);
+                    //1. 빈 ModelAndView 반환 시 뷰 렌더링을 하지 않고 정상 흐름으로 서블릿 반환
                     return new ModelAndView(); //예외를 response 로 반환
                 } else { //TEXT/HTML
+                    //2. ModelAndView 에 View, Model 정보를 지정하여 반환하면 뷰 렌더링
                     return new ModelAndView("error/500"); //예외를 ModelAndView 로 반환
                 }
             }
@@ -44,6 +47,9 @@ public class UserHandlerExceptionResolver implements HandlerExceptionResolver {
             log.error("resolver ex", e);
         }
 
+        //3. null 반환 시
+        //다음 ExceptionResolver 찾아서 실행
+        //처리 가능한 ExceptionResolver 가 없을 경우 기존 발생한 예외를 서블릿 밖으로 전달
         return null;
     }
 }
