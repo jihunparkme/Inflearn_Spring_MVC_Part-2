@@ -22,6 +22,9 @@ import java.util.Collection;
 @RequestMapping("/servlet/v2")
 public class ServletUploadControllerV2 {
 
+    /**
+     * properties 설정 값 주입
+     */
     @Value("${file.dir}")
     private String fileDir;
 
@@ -37,6 +40,9 @@ public class ServletUploadControllerV2 {
         String itemName = request.getParameter("itemName");
         log.info("itemName={}", itemName);
 
+        /**
+         * Multipart 형식은 전송 데이터를 각 Part 로 나누어 전송
+         */
         Collection<Part> parts = request.getParts();
         log.info("parts={}", parts);
 
@@ -50,11 +56,11 @@ public class ServletUploadControllerV2 {
 
             //편의 메서드
             //content-disposition; filename
-            log.info("submittedFileName={}", part.getSubmittedFileName());
+            log.info("submittedFileName={}", part.getSubmittedFileName()); // 클라이언트가 전달한 파일명
             log.info("size={}", part.getSize()); //part body size
 
             //데이터 읽기
-            InputStream inputStream = part.getInputStream();
+            InputStream inputStream = part.getInputStream(); // Part의 전송 데이터 읽기
             String body = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
             log.info("body={}", body);
 
@@ -62,7 +68,7 @@ public class ServletUploadControllerV2 {
             if (StringUtils.hasText(part.getSubmittedFileName())) {
                 String fullPath = fileDir + part.getSubmittedFileName();
                 log.info("파일 저장 fullPath={}", fullPath);
-                part.write(fullPath);
+                part.write(fullPath); // Part를 통해 전송된 데이터를 저장
             }
         }
 
